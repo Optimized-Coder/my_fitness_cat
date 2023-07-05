@@ -91,8 +91,6 @@ class Cat(db.Model):
             coefficient *= 1
 
         calories = round(base_calories * coefficient)
-        print(coefficient)
-        print(base_calories)
 
         return calories
     

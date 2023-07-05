@@ -1,8 +1,8 @@
 @import url(./main.css);
 
 :root {
-    --main: #fff;
-    --secondary: #000;
+    --secondary: #fff;
+    --main: #000;
     --accent: rgb(31, 4, 150);
     --info: yellow;
     --error: red;

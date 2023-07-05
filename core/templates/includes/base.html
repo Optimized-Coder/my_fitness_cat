@@ -6,7 +6,11 @@
     <title>
         {{ title }}
     </title>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/root.css')}}">
+    {% if request.args.get('theme') == 'dark' %}
+        <link rel="stylesheet" href="{{url_for('static', filename='css/root_dark.css')}}">
+    {% else %}
+        <link rel="stylesheet" href="{{url_for('static', filename='css/root.css')}}">
+    {% endif %}
 </head>
 <body>
     {% include 'includes/header.html' %}
