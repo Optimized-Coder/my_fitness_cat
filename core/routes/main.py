@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, redirect, url_for, flash
+from flask import Blueprint, request, render_template, redirect, url_for, flash, jsonify
 from flask_login import current_user, login_required
 
 from datetime import date
@@ -96,6 +96,13 @@ def get_cats():
         **context
     )
 
+@main.route('/my-cats/json/', methods=['GET'])
+@login_required
+def get_cats_json():
+    cats = [cat.to_dict() for cat in get_user_cats()]
+
+    return jsonify(cats)
+
     
 @main.route('/my-cats/<int:cat_id>/', methods=['GET'])
 @login_required
@@ -111,6 +118,12 @@ def get_cat(cat_id):
         **context
     )
 
+@main.route('/my-cats/<int:cat_id>/json/', methods=['GET'])
+@login_required
+def get_cat_json(cat_id):
+    found_cat = [cat.to_dict() for cat in get_user_cats() if cat.id == cat_id]
+
+    return jsonify(found_cat)
 
 @main.route('/my-cats/<int:cat_id>/delete/', methods=['DELETE'])
 @login_required
