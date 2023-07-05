@@ -42,12 +42,14 @@ def login():
 
         if user is None or not check_password_hash(user.password_hash, password):
             flash('Invalid username or password')
-            return 'Invalid username or password'
+            return redirect(url_for('auth.login'))
         else:
             login_user(user, remember=True)
-            return 'User logged in'
+            flash('Logged in', 'success')
+            return redirect(url_for('main.get_cats'))
     else: 
-        return 'Already Logged in'
+        flash('Already Logged in')
+        return redirect(url_for('main.get_cats'))
 
 '''
 register routes
@@ -72,20 +74,28 @@ def register():
     if not current_user.is_authenticated:
         username = request.form.get('username')
         password = request.form.get('password')
+        password_check = request.form.get('password_check')
         email = request.form.get('email')
         first_name = request.form.get('f_name')
         last_name = request.form.get('l_name')
 
         # validation
         if not validate_password(password):
-            return 'Invalid password.'
+            flash('Invalid password.')
+            return redirect(url_for('auth.register'))
+        elif not password == password_check:
+            flash('Passwords do not')
+            return redirect(url_for('auth.register'))
         elif not validate_email(email):
-            return 'Invalid email.'
+            flash('Invalid email.')
+            return redirect(url_for('auth.register'))
         elif not validate_username(username):
-            return 'Invalid username.'
+            flash('Invalid username.')
+            return redirect(url_for('auth.register'))
         else: 
             password_hash = generate_password_hash(password, method='sha256')
 
+        # create new user
         user = User(
             username=username,
             password_hash=password_hash,

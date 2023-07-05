@@ -88,7 +88,8 @@ def get_cats():
 
     context = {
         'title': 'My Cats | My Fitness Cat',
-        'cats': cats
+        'cats': cats,
+        'user': current_user
     }
     return render_template(
         'main/view_all.html',
