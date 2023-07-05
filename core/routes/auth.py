@@ -101,6 +101,9 @@ def register():
     else:
         return 'Already Logged in'
 
+'''
+Logout routes
+'''
     
 @auth.route('/logout/')
 def logout():
@@ -108,4 +111,4 @@ def logout():
         return 'You must be logged in'
     else:
         logout_user()
-        return 'Logged out'
+        return redirect(url_for('auth.login'))
