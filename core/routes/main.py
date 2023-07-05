@@ -1,4 +1,5 @@
 from flask import Blueprint, request
+from flask_login import current_user, login_required
 
 from ..models import User, Cat, owner_cat
 from ..extensions import db
@@ -10,12 +11,20 @@ def index():
     return '<h1>Main route</h1>'
 
 @main.route('/add-cat/', methods=['POST'])
+@login_required
 def add_cat():
-    user = User.query.get(1)
+    user = current_user
     weight = request.form.get('weight')
     weight_class = request.form.get('weight_class')
-    is_neutered = False
+    is_neutered_input = request.form.get('is_neutered')
     name = request.form.get('name')
+
+    if is_neutered_input == 'false':
+        is_neutered = False
+    elif is_neutered_input == 'true':
+        is_neutered = True
+    else:
+        return 'Please enter a valid input'
 
     new_cat = Cat(
         weight=int(weight),
@@ -33,4 +42,13 @@ def add_cat():
 
     return 'Cat added'
 
+@main.route('/my-cats/')
+@login_required
+def get_user_cats():
+    user = current_user
+    cats = user.cats
 
+    if cats.count() > 0:
+        return [cat.to_dict() for cat in cats]
+    else:
+        return 'No cats found'

@@ -63,7 +63,7 @@ def validate_password(password):
 def validate_email(email):
     if not re.search(r'@', email):
         return False
-    elif User.query.filter_by(email=email).exists():
+    elif bool(User.query.filter_by(email=email).first()):
         return False
     elif len(email) < 6:
         return False
@@ -73,7 +73,7 @@ def validate_email(email):
 def validate_username(username):
     if len(username) < 6:
         return False
-    elif User.query.filter_by(username=username).exists():
+    elif bool(User.query.filter_by(username=username).first()):
         return False
     else:
         return True
