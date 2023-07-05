@@ -1,6 +1,8 @@
 import re
 from .models import User
 
+from flask_login import current_user
+
 def get_daily_calories(weight_kg, is_neutered, weight_class):
     '''
     Function: calculates daily calorie intake for cats
@@ -77,3 +79,12 @@ def validate_username(username):
         return False
     else:
         return True
+    
+def get_user_cats():
+    user = current_user
+    cats = user.cats
+
+    if cats.count() > 0:
+        return [cat for cat in cats]
+    else:
+        return 'No cats found'

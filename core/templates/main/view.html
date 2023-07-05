@@ -1,4 +1,34 @@
 {% extends 'includes/base.html' %}
 {% block content %}
-<h1>view</h1>
+<h1>My Cats</h1>
+<table>
+    <thead>
+        <tr>
+            <th>#ID</th>
+            <th>Name</th>
+            <th>Weight KG</th>
+            <th>Age</th>
+            <th>Daily Calories</th>
+            <th>Grams of Wet Food</th>
+            <th>Grams of Dry Food</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cat in cats %}
+            <tr>
+                <td>{{ cat.id }}</td>
+                <td>{{ cat.name }}</td>
+                <td>{{ cat.weight }}</td>
+                {% if cat.age > 0 %}
+                    <td>{{ cat.age }} years</td>
+                {% else %}
+                    <td>{{cat.age_months}} months</td>
+                {% endif %}
+                <td>{{ cat.daily_calories }}</td>
+                <td>{{ cat.grams_of_wet }}</td>
+                <td>{{ cat.grams_of_dry }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

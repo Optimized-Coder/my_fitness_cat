@@ -1,10 +1,11 @@
-from flask import Blueprint, request, render_template
+from flask import Blueprint, request, render_template, redirect, url_for, flash
 from flask_login import current_user, login_required
 
 from datetime import date
 
 from ..models import Cat, owner_cat
 from ..extensions import db
+from ..functions import get_user_cats
 
 main = Blueprint('main', __name__)
 
@@ -16,6 +17,21 @@ def index():
 
     return render_template(
         'main/index.html',
+        **context
+    )
+
+'''
+Add cat routes
+'''
+
+@main.route('/add-cat/', methods=['GET'])
+@login_required
+def add_cat_get():
+    context = {
+        'title': 'Add Cat | My Fitness Cat'
+    }
+    return render_template(
+        'main/add-cat.html',
         **context
     )
 
@@ -65,43 +81,71 @@ def add_cat():
 
 @main.route('/my-cats/', methods=['GET'])
 @login_required
-def get_user_cats():
-    user = current_user
-    cats = user.cats
+def get_cats():
+    cats = [cat.to_dict() for cat in get_user_cats()]
 
-    if cats.count() > 0:
-        return [cat.to_dict() for cat in cats]
-    else:
-        return 'No cats found'
+    context = {
+        'title': 'My Cats | My Fitness Cat',
+        'cats': cats
+    }
+    return render_template(
+        'main/view.html',
+        **context
+    )
+
     
 @main.route('/my-cats/<int:cat_id>/', methods=['GET'])
 @login_required
 def get_cat(cat_id):
-    user=current_user
-    cats = user.cats
+    found_cat = [cat.to_dict() for cat in get_user_cats() if cat.id == cat_id]
 
-    return [cat.to_dict() for cat in cats if cat.id == cat_id]
+    context = {
+        'title': 'My Cats | My Fitness Cat',
+        'cats': found_cat
+    }
+    return render_template(
+        'main/view.html',
+        **context
+    )
+
 
 @main.route('/my-cats/<int:cat_id>/delete/', methods=['DELETE'])
 @login_required
 def delete_cat(cat_id):
-    user=current_user
-    cats = user.cats
-    cat = Cat.query.get(cat_id)
-
-    if cat:
-        db.session.delete(cat)
+    cats = [cat for cat in get_user_cats() if cat.id == cat_id]
+    found_cat = cats[0]
+    if found_cat:
+        db.session.delete(found_cat)
         db.session.commit()
-        return f'cat: {cat.name} deleted'
+        flash(f'Cat {found_cat.name} deleted')
+        return redirect(url_for('main.get_cats'))
     
-    return 'Cat not found'
+    raise ValueError('Cat not found')
+
+'''
+edit cat routes
+'''
+
+@main.route('/my-cats/<int:cat_id>/edit/', methods=['GET'])
+@login_required
+def edit_cat_get(cat_id):
+    cats = [cat for cat in get_user_cats() if cat.id == cat_id]
+    found_cat = cats[0]
+
+    context = {
+        'title': 'Edit Cat | My Fitness Cat',
+        'cats': found_cat
+    }
+
+    return render_template(
+        'main/edit-cat.html',
+        **context
+    )
 
 @main.route('/my-cats/<int:cat_id>/edit/', methods=['POST'])
 @login_required
 def edit_cat(cat_id):
-    user=current_user
-    cats = user.cats
-    cat = Cat.query.get(cat_id)
+    found_cat = [cat.to_dict() for cat in get_user_cats() if cat.id == cat_id]
 
     weight = request.form.get('weight')
     weight_class = request.form.get('weight_class')
@@ -113,22 +157,22 @@ def edit_cat(cat_id):
     breed = request.form.get('breed')
     color = request.form.get('color')
 
-    if cat:
+    if found_cat:
         if weight:
-            cat.weight = float(weight)
+            found_cat.weight = float(weight)
         if weight_class:
-            cat.weight_class = str(weight_class)
+            found_cat.weight_class = str(weight_class)
         if is_neutered_input:
-            cat.is_neutered = True if is_neutered_input == 'true' else False
+            found_cat.is_neutered = True if is_neutered_input == 'true' else False
         if dob_day and dob_month and dob_year:
-            cat.dob = date(day=int(dob_day), month=int(dob_month), year=int(dob_year))
+            found_cat.dob = date(day=int(dob_day), month=int(dob_month), year=int(dob_year))
         if breed:
-            cat.breed = str(breed).strip()
+            found_cat.breed = str(breed).strip()
         if color:
-            cat.color = str(color).strip()
+            found_cat.color = str(color).strip()
 
         db.session.commit()
-        return f'cat: {cat.name} edited'
+        return redirect(url_for('main.get_cats'))
     
     raise ValueError('Cat not found')
 
