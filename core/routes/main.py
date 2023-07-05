@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from flask_login import current_user, login_required
 
-from ..models import User, Cat, owner_cat
+from ..models import Cat, owner_cat
 from ..extensions import db
 
 main = Blueprint('main', __name__)
@@ -66,3 +66,44 @@ def get_cat(cat_id):
     cats = user.cats
 
     return [cat.to_dict() for cat in cats if cat.id == cat_id]
+
+@main.route('/my-cats/<int:cat_id>/delete/', methods=['DELETE'])
+@login_required
+def delete_cat(cat_id):
+    user=current_user
+    cats = user.cats
+    cat = Cat.query.get(cat_id)
+
+    if cat:
+        db.session.delete(cat)
+        db.session.commit()
+        return f'cat: {cat.name} deleted'
+    
+    return 'Cat not found'
+
+@main.route('/my-cats/<int:cat_id>/edit/', methods=['POST'])
+@login_required
+def edit_cat(cat_id):
+    user=current_user
+    cats = user.cats
+    cat = Cat.query.get(cat_id)
+
+    weight = request.form.get('weight')
+    weight_class = request.form.get('weight_class')
+    is_neutered_input = request.form.get('is_neutered')
+    age = request.form.get('age')
+    breed = request.form.get('breed')
+    color = request.form.get('color')
+
+    if cat:
+        cat.weight = int(weight)
+        cat.weight_class = str(weight_class)
+        cat.is_neutered = True if is_neutered_input == 'true' else False
+        cat.age = int(age)
+        cat.breed = str(breed).strip()
+        cat.color = str(color).strip()
+        db.session.commit()
+        return f'cat: {cat.name} edited'
+    
+    return 'Cat not found'
+
