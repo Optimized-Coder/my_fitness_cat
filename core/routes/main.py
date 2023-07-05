@@ -24,7 +24,7 @@ def add_cat():
     dob_month = request.form.get('dob_month')
     dob_year = request.form.get('dob_year')
 
-    dob = date(day=dob_day, month=dob_month, year=dob_year)
+    dob = date(day=int(dob_day), month=int(dob_month), year=int(dob_year))
 
     if is_neutered_input == 'false':
         is_neutered = False
@@ -34,7 +34,7 @@ def add_cat():
         return 'Please enter a valid input'
 
     new_cat = Cat(
-        weight=int(weight),
+        weight=float(weight),
         weight_class=weight_class,
         is_neutered=is_neutered,
         name=name,
@@ -107,12 +107,19 @@ def edit_cat(cat_id):
     color = request.form.get('color')
 
     if cat:
-        cat.weight = int(weight)
-        cat.weight_class = str(weight_class)
-        cat.is_neutered = True if is_neutered_input == 'true' else False
-        cat.dob = date(day=int(dob_day), month=int(dob_month), year=int(dob_year))
-        cat.breed = str(breed).strip()
-        cat.color = str(color).strip()
+        if weight:
+            cat.weight = float(weight)
+        if weight_class:
+            cat.weight_class = str(weight_class)
+        if is_neutered_input:
+            cat.is_neutered = True if is_neutered_input == 'true' else False
+        if dob_day and dob_month and dob_year:
+            cat.dob = date(day=int(dob_day), month=int(dob_month), year=int(dob_year))
+        if breed:
+            cat.breed = str(breed).strip()
+        if color:
+            cat.color = str(color).strip()
+            
         db.session.commit()
         return f'cat: {cat.name} edited'
     

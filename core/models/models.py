@@ -37,7 +37,7 @@ class Cat(db.Model):
     dob = db.Column(db.Date)
     breed = db.Column(db.String(80))
     color = db.Column(db.String(80))
-    weight = db.Column(db.Integer)
+    weight = db.Column(db.Float)
     weight_class = db.Column(db.String(24))
     is_neutered = db.Column(db.Boolean)
 
@@ -68,10 +68,13 @@ class Cat(db.Model):
 
         coefficient = 1
 
-        if self.is_neutered == True:
-            coefficient *= 1.6
+        if self.age_months >= 12:
+            if self.is_neutered == True:
+                coefficient *= 1.6
+            else:
+                coefficient *= 1.8
         else:
-            coefficient *= 1.8
+            coefficient *= 1
 
         if self.weight_class.lower() == 'overweight':
             coefficient *= 0.8
@@ -88,6 +91,8 @@ class Cat(db.Model):
             coefficient *= 1
 
         calories = round(base_calories * coefficient)
+        print(coefficient)
+        print(base_calories)
 
         return calories
     

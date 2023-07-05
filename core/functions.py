@@ -34,7 +34,7 @@ def get_daily_calories(weight_kg, is_neutered, weight_class):
     elif weight_class.lower() == 'normal':
         base_calories *= 1
     else:
-        return 'Please enter a valid weight class'
+        raise ValueError('Value must be: overwight, obese, underweight or normal')
 
     calories = round(base_calories)
 
