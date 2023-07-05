@@ -1,0 +1,37 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 3rem;
+
+    background-color: transparent;
+}
+
+header h2 {
+    font-size: 2rem;
+}
+
+nav ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+nav li {
+    font-size: 1rem;
+    list-style-type: none;
+}
+
+nav li a {
+    padding: 1rem 2rem;
+}
+
+nav li a.active {
+    border-bottom: 1px solid var(--accent);
+}
+
+nav li a:hover {
+    border-bottom: 1px solid var(--accent);
+}
+
