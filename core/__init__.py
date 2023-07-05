@@ -3,7 +3,7 @@ from flask import Flask, redirect, url_for
 import os
 
 from .extensions import db, migrate, login_manager
-from .functions import get_daily_calories
+from .functions import get_daily_calories, validate_password
 
 def create_app():
     app = Flask(__name__)
@@ -23,13 +23,19 @@ def create_app():
     app.register_blueprint(main)
     app.register_blueprint(auth)
 
-    # @login_manager.user_loader
-    # def load_user(user_id):
-    #     return User.query.get(int(user_id))
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
     
-    # @login_manager.login_view
-    # def login():
-    #     return redirect(url_for('auth.login'))
+    login_manager.login_view = 'auth.login'
     
+    @app.route('/test/')
+    def test():
+        password = validate_password('Hello123')
+
+        if password:
+            return 'true'
+        else:
+            return 'false'
 
     return app

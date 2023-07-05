@@ -39,4 +39,53 @@ class Cat(db.Model):
     weight_class = db.Column(db.String(24))
     is_neutered = db.Column(db.Boolean)
 
+    def __repr__(self):
+        return f'{self.id}: {self.name}'
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'age': self.age,
+            'breed': self.breed,
+            'color': self.color,
+            'weight': self.weight,
+            'weight_class': self.weight_class,
+            'is_neutered': self.is_neutered
+        }
+
+    @property
+    def daily_calories(self):
+        '''
+        Function: calculates daily calorie intake for cats
+        Parameters: 
+        - int:weight_kg
+        - bool:is_neutered 
+        - str:weight_class
+        Returns: daily calorie intake
+            return type: int
+        '''
+
+        base_calories = self.weight ** 0.75 * 70
+
+        if self.is_neutered == True:
+            base_calories *= 1.2
+        else:
+            base_calories *= 1.4
+
+        if self.weight_class.lower() == 'overweight':
+            base_calories *= 0.8
+        elif self.weight_class.lower() == 'obese':
+            base_calories *= 0.7
+        elif self.weight_class.lower() == 'underweight':
+            base_calories *= 1.2
+        elif self.weight_class.lower() == 'normal':
+            base_calories *= 1
+        else:
+            return 'Please enter a valid weight class'
+
+        calories = round(base_calories)
+
+        return calories
+
     

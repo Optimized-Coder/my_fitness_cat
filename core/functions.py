@@ -1,3 +1,6 @@
+import re
+from .models import User
+
 def get_daily_calories(weight_kg, is_neutered, weight_class):
     '''
     Function: calculates daily calorie intake for cats
@@ -37,3 +40,40 @@ def get_daily_calories(weight_kg, is_neutered, weight_class):
 
     return calories
 
+def validate_password(password):
+    if len(password) < 8:
+        print(len(password))
+        return False
+    elif not re.search(r'[a-z]', password):
+        print('must include lowercase')
+        return False
+    elif not re.search(r'[A-Z]', password):
+        print('must include uppercase')
+        return False
+    elif not re.search(r'\d', password):
+        print('must include a number')
+        return False
+    elif not re.search(r'\W', password):
+        print('must include a special character')
+        return False
+    else:
+        print('password accepted')
+        return True
+
+def validate_email(email):
+    if not re.search(r'@', email):
+        return False
+    elif User.query.filter_by(email=email).exists():
+        return False
+    elif len(email) < 6:
+        return False
+    else:
+        return True
+
+def validate_username(username):
+    if len(username) < 6:
+        return False
+    elif User.query.filter_by(username=username).exists():
+        return False
+    else:
+        return True
