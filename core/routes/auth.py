@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, url_for, request, flash
+from flask import Blueprint, redirect, url_for, request, flash, render_template
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -15,8 +15,24 @@ def index():
     else:
         return redirect(url_for('main.index'))
     
+'''
+Login routes
+'''
 
-@auth.route('/login/', methods=['GET', 'POST'])
+@auth.route('/login/', methods=['GET'])
+def login_get():
+    if not current_user.is_authenticated:
+        context = {
+            'title': 'Login | My Fitness Cat',
+        }
+        return render_template(
+            'auth/login.html',
+            **context
+        )
+    else:
+        return redirect(url_for('main.index'))
+
+@auth.route('/login/', methods=['POST'])
 def login():
     if not current_user.is_authenticated:
         username = request.form.get('username')
@@ -33,6 +49,23 @@ def login():
     else: 
         return 'Already Logged in'
 
+'''
+register routes
+'''
+
+@auth.route('/register/', methods=['GET'])
+def register_get():
+    if not current_user.is_authenticated:
+        context = {
+            'title': 'Register | My Fitness Cat'
+        }
+
+        return render_template(
+            'auth/register.html',
+            **context
+        )
+    else:
+        return redirect(url_for('main.index'))
     
 @auth.route('/register/', methods=['POST'])
 def register():

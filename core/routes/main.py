@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, render_template
 from flask_login import current_user, login_required
 
 from datetime import date
@@ -10,7 +10,14 @@ main = Blueprint('main', __name__)
 
 @main.route('/', methods=['GET'])
 def index():
-    return '<h1>Main route</h1>'
+    context = {
+        'title': 'Home | My Fitness Cat'
+    }
+
+    return render_template(
+        'main/index.html',
+        **context
+    )
 
 @main.route('/add-cat/', methods=['POST'])
 @login_required
