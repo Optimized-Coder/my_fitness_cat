@@ -1,6 +1,8 @@
 from ..extensions import db
 from flask_login import UserMixin
 
+from datetime import datetime, date
+
 owner_cat = db.Table(
     'owner_cat',
     db.Column('owner_id', db.Integer, db.ForeignKey('user.id')),
@@ -32,7 +34,7 @@ class User(UserMixin, db.Model):
 class Cat(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
-    age = db.Column(db.Integer)
+    dob = db.Column(db.Date)
     breed = db.Column(db.String(80))
     color = db.Column(db.String(80))
     weight = db.Column(db.Integer)
@@ -41,6 +43,14 @@ class Cat(db.Model):
 
     def __repr__(self):
         return f'{self.id}: {self.name}'
+    
+    @property
+    def age(self):
+        return int(datetime.now().year) - int(self.dob.year)
+
+    @property
+    def age_months(self):
+        return self.age * 12 + (int(datetime.now().month) - int(self.dob.month))
 
     @property
     def daily_calories(self):
@@ -56,23 +66,28 @@ class Cat(db.Model):
 
         base_calories = self.weight ** 0.75 * 70
 
+        coefficient = 1
+
         if self.is_neutered == True:
-            base_calories *= 1.2
+            coefficient *= 1.6
         else:
-            base_calories *= 1.4
+            coefficient *= 1.8
 
         if self.weight_class.lower() == 'overweight':
-            base_calories *= 0.8
-        elif self.weight_class.lower() == 'obese':
-            base_calories *= 0.7
+            coefficient *= 0.8
         elif self.weight_class.lower() == 'underweight':
-            base_calories *= 1.2
-        elif self.weight_class.lower() == 'normal':
-            base_calories *= 1
+            coefficient *= 1.2
         else:
-            return 'Please enter a valid weight class'
+            coefficient *= 1
 
-        calories = round(base_calories)
+        if self.age_months <= 4:
+            coefficient *= 3
+        elif self.age_months > 4 and self.age_months < 12:
+            coefficient *= 2
+        else:
+            coefficient *= 1
+
+        calories = round(base_calories * coefficient)
 
         return calories
     
@@ -98,7 +113,7 @@ class Cat(db.Model):
         return {
             'id': self.id,
             'name': self.name,
-            'age': self.age,
+            'dob': str(self.dob),
             'breed': self.breed,
             'color': self.color,
             'weight': self.weight,
@@ -106,5 +121,7 @@ class Cat(db.Model):
             'is_neutered': self.is_neutered,
             'daily_calories': self.daily_calories,
             'grams_of_dry': self.grams_of_dry,
-            'grams_of_wet': self.grams_of_wet
+            'grams_of_wet': self.grams_of_wet, 
+            'age': self.age,
+            'age_months': self.age_months
         }

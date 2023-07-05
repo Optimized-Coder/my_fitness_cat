@@ -1,6 +1,8 @@
 from flask import Blueprint, request
 from flask_login import current_user, login_required
 
+from datetime import date
+
 from ..models import Cat, owner_cat
 from ..extensions import db
 
@@ -18,6 +20,11 @@ def add_cat():
     weight_class = request.form.get('weight_class')
     is_neutered_input = request.form.get('is_neutered')
     name = request.form.get('name')
+    dob_day = request.form.get('dob_day')
+    dob_month = request.form.get('dob_month')
+    dob_year = request.form.get('dob_year')
+
+    dob = date(day=dob_day, month=dob_month, year=dob_year)
 
     if is_neutered_input == 'false':
         is_neutered = False
@@ -30,7 +37,8 @@ def add_cat():
         weight=int(weight),
         weight_class=weight_class,
         is_neutered=is_neutered,
-        name=name
+        name=name,
+        dob=dob
     )
 
     db.session.add(new_cat)
@@ -91,7 +99,10 @@ def edit_cat(cat_id):
     weight = request.form.get('weight')
     weight_class = request.form.get('weight_class')
     is_neutered_input = request.form.get('is_neutered')
-    age = request.form.get('age')
+    dob_day = request.form.get('dob_day')
+    dob_month = request.form.get('dob_month')
+    dob_year = request.form.get('dob_year')
+
     breed = request.form.get('breed')
     color = request.form.get('color')
 
@@ -99,7 +110,7 @@ def edit_cat(cat_id):
         cat.weight = int(weight)
         cat.weight_class = str(weight_class)
         cat.is_neutered = True if is_neutered_input == 'true' else False
-        cat.age = int(age)
+        cat.dob = date(day=int(dob_day), month=int(dob_month), year=int(dob_year))
         cat.breed = str(breed).strip()
         cat.color = str(color).strip()
         db.session.commit()
