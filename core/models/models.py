@@ -75,6 +75,24 @@ class Cat(db.Model):
         calories = round(base_calories)
 
         return calories
+    
+    @property
+    def grams_of_dry(self):
+        calorie_requirement = int(self.daily_calories)
+        CALORIES_PER_100_GRAMS = 377
+
+        grams_of_dry = round(calorie_requirement / CALORIES_PER_100_GRAMS * 100)
+
+        return grams_of_dry
+    
+    @property
+    def grams_of_wet(self):
+        calorie_requirement = int(self.daily_calories)
+        CALORIES_PER_100_GRAMS = 73
+
+        grams_of_wet = round(calorie_requirement / CALORIES_PER_100_GRAMS * 100)
+
+        return grams_of_wet
 
     def to_dict(self):
         return {
@@ -86,5 +104,7 @@ class Cat(db.Model):
             'weight': self.weight,
             'weight_class': self.weight_class,
             'is_neutered': self.is_neutered,
-            'daily_calories': self.daily_calories
+            'daily_calories': self.daily_calories,
+            'grams_of_dry': self.grams_of_dry,
+            'grams_of_wet': self.grams_of_wet
         }
