@@ -1,1 +1,1 @@
-from .user import User
+from .models import User, Cat, owner_cat
