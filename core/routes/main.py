@@ -119,9 +119,10 @@ def edit_cat(cat_id):
             cat.breed = str(breed).strip()
         if color:
             cat.color = str(color).strip()
-            
+
         db.session.commit()
         return f'cat: {cat.name} edited'
     
-    return 'Cat not found'
+    raise ValueError('Cat not found')
+
 
