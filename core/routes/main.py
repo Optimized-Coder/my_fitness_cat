@@ -34,13 +34,19 @@ def add_cat():
     )
 
     db.session.add(new_cat)
-    
+    db.session.commit()
 
-    user.cats.append(Cat.query.get(1))
+    user_cat = owner_cat.insert().values(
+        owner_id=user.id,
+        cat_id=new_cat.id
+    )
 
+    db.session.execute(user_cat)
     db.session.commit()
 
     return 'Cat added'
+
+
 
 @main.route('/my-cats/')
 @login_required

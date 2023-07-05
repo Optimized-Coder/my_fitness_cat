@@ -41,18 +41,6 @@ class Cat(db.Model):
 
     def __repr__(self):
         return f'{self.id}: {self.name}'
-    
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'age': self.age,
-            'breed': self.breed,
-            'color': self.color,
-            'weight': self.weight,
-            'weight_class': self.weight_class,
-            'is_neutered': self.is_neutered
-        }
 
     @property
     def daily_calories(self):
@@ -88,4 +76,15 @@ class Cat(db.Model):
 
         return calories
 
-    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'age': self.age,
+            'breed': self.breed,
+            'color': self.color,
+            'weight': self.weight,
+            'weight_class': self.weight_class,
+            'is_neutered': self.is_neutered,
+            'daily_calories': self.daily_calories
+        }
