@@ -31,7 +31,7 @@ def add_cat_get():
         'title': 'Add Cat | My Fitness Cat'
     }
     return render_template(
-        'main/add-cat.html',
+        'main/add.html',
         **context
     )
 
@@ -77,7 +77,9 @@ def add_cat():
 
     return 'Cat added'
 
-
+'''
+View cats routes
+'''
 
 @main.route('/my-cats/', methods=['GET'])
 @login_required
@@ -89,7 +91,7 @@ def get_cats():
         'cats': cats
     }
     return render_template(
-        'main/view.html',
+        'main/view_all.html',
         **context
     )
 
@@ -104,7 +106,7 @@ def get_cat(cat_id):
         'cats': found_cat
     }
     return render_template(
-        'main/view.html',
+        'main/view_one.html',
         **context
     )
 
