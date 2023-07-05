@@ -48,7 +48,7 @@ def add_cat():
 
 
 
-@main.route('/my-cats/')
+@main.route('/my-cats/', methods=['GET'])
 @login_required
 def get_user_cats():
     user = current_user
@@ -58,3 +58,11 @@ def get_user_cats():
         return [cat.to_dict() for cat in cats]
     else:
         return 'No cats found'
+    
+@main.route('/my-cats/<int:cat_id>/', methods=['GET'])
+@login_required
+def get_cat(cat_id):
+    user=current_user
+    cats = user.cats
+
+    return [cat.to_dict() for cat in cats if cat.id == cat_id]
