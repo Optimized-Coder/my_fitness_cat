@@ -17,7 +17,7 @@ def create_app():
     migrate.init_app(app, db)
     login_manager.init_app(app)
 
-    from .models import User, owner_cat, Cat
+    from .models import User, owner_cat, Cat, Food, cat_food
 
     from .routes import main, auth
     app.register_blueprint(main)

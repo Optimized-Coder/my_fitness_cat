@@ -120,6 +120,17 @@ class Cat(db.Model):
         grams_of_wet = round(calorie_requirement / CALORIES_PER_100_GRAMS * 100)
 
         return grams_of_wet
+    
+    @property
+    def grams_of_chosen_food(self):
+        calorie_requirement = int(self.daily_calories)
+        if len(self.food_choice) > 0:
+            CALORIES_PER_100_GRAMS = self.food_choice[0].calories
+            grams_of_chosen_food = round(calorie_requirement / CALORIES_PER_100_GRAMS * 100)
+            
+            return grams_of_chosen_food
+        else:
+            return 0
 
     def to_dict(self):
         return {
@@ -135,7 +146,9 @@ class Cat(db.Model):
             'grams_of_dry': self.grams_of_dry,
             'grams_of_wet': self.grams_of_wet, 
             'age': self.age,
-            'age_months': self.age_months
+            'age_months': self.age_months,
+            'food_choice': [food.to_dict() for food in self.food_choice],
+            'grams_of_chosen_food': self.grams_of_chosen_food
         }
 
 class Food(db.Model):
@@ -145,3 +158,12 @@ class Food(db.Model):
     # calories per 100g
     calories = db.Column(db.Integer)
     packaging = db.Column(db.String, index=True)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'flavour': self.flavour,
+            'age': self.age,
+            'calories': self.calories,
+            'packaging': self.packaging
+        }
