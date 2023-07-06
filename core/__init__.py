@@ -19,9 +19,10 @@ def create_app():
 
     from .models import User, owner_cat, Cat, Food, cat_food
 
-    from .routes import main, auth
+    from .routes import main, auth, food
     app.register_blueprint(main)
     app.register_blueprint(auth)
+    app.register_blueprint(food)
 
     @login_manager.user_loader
     def load_user(user_id):

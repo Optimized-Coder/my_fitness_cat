@@ -153,17 +153,21 @@ class Cat(db.Model):
 
 class Food(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    wet_or_dry = db.Column(db.String(8), index=True)
     flavour = db.Column(db.String(24), index=True)
     age = db.Column(db.String, index=True)
     # calories per 100g
     calories = db.Column(db.Integer)
     packaging = db.Column(db.String, index=True)
+    weight_g = db.Column(db.Integer)
 
     def to_dict(self):
         return {
             'id': self.id,
+            'wet_or_dry': self.wet_or_dry,
             'flavour': self.flavour,
             'age': self.age,
             'calories': self.calories,
-            'packaging': self.packaging
+            'packaging': self.packaging,
+            'weight_grams': f'{self.weight_g}g'
         }
