@@ -77,7 +77,6 @@ def register():
         password_check = request.form.get('password_check')
         email = request.form.get('email')
         first_name = request.form.get('f_name')
-        last_name = request.form.get('l_name')
 
         # validation
         if not validate_password(password):
@@ -101,7 +100,6 @@ def register():
             password_hash=password_hash,
             email=email,
             first_name=first_name,
-            last_name=last_name
         )
 
         db.session.add(user)

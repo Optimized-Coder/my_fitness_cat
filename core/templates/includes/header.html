@@ -2,9 +2,16 @@
     <h2>My Fitness Cat</h2>
     <nav>
         <ul class="nav">
-            <li><a href="#" class="active">Your Cats</a></li>
+            {% if current_user.is_authenticated %}
+            <li><a href="#">Your Cats</a></li>
             <li><a href="#">Add Cat</a></li>
+            {% endif %}
+            {% if not current_user.is_authenticated %}
+            <li><a href="#">Log In</a></li>
+            <li><a href="#">Register</a></li>
+            {% endif %}
             <li><a href="#">Contact Us</a></li>
+
         </ul>
     </nav>
 </header>

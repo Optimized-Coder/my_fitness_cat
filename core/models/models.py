@@ -9,6 +9,12 @@ owner_cat = db.Table(
     db.Column('cat_id', db.Integer, db.ForeignKey('cat.id'))
 )
 
+cat_food = db.Table(
+    'cat_food',
+    db.Column('cat_id', db.Integer, db.ForeignKey('cat.id')),
+    db.Column('food_id', db.Integer, db.ForeignKey('food.id'))
+)
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -40,6 +46,9 @@ class Cat(db.Model):
     weight = db.Column(db.Float)
     weight_class = db.Column(db.String(24))
     is_neutered = db.Column(db.Boolean)
+    food_choice = db.relationship('Food',
+    secondary=cat_food, backref='cat', lazy='dynamic'
+    )
 
     def __repr__(self):
         return f'{self.id}: {self.name}'
@@ -128,3 +137,11 @@ class Cat(db.Model):
             'age': self.age,
             'age_months': self.age_months
         }
+
+class Food(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    flavour = db.Column(db.String(24), index=True)
+    age = db.Column(db.String, index=True)
+    # calories per 100g
+    calories = db.Column(db.Integer)
+    packaging = db.Column(db.String, index=True)

@@ -47,7 +47,11 @@ def add_cat():
     dob_month = request.form.get('dob_month')
     dob_year = request.form.get('dob_year')
 
-    dob = date(day=int(dob_day), month=int(dob_month), year=int(dob_year))
+    dob = date(
+        day=int(dob_day), 
+        month=int(dob_month), 
+        year=int(dob_year)
+    )
 
     if is_neutered_input == 'false':
         is_neutered = False

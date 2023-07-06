@@ -11,7 +11,6 @@
 body {
     background-color: var(--main);
     color: var(--secondary);
-    min-height: 100vh;
 }
 
 /* components */
@@ -23,20 +22,18 @@ h1 {
 
 .full-wrapper {
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
 
     width: 100%;
+    min-height: 80vh;
 
-    padding:0 4rem;
+    padding:1rem 4rem;
 }
 
 table {
@@ -66,4 +63,37 @@ a:hover {
 span.icon {
     display: inline-block;
     padding: .5rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    margin-top:.7rem;
+    justify-content: space-evenly;
+    align-items: center;
+    min-height: 70vh
+}
+
+label {
+    display: none;
+}
+
+input {
+    padding: 1.8rem;
+    width: 60vw;
+    margin: 1rem;
+    display: block;
+    border-radius:.5rem;
+    font-size: 2rem;
+    cursor: text;
+}
+
+input[type='submit']{
+    padding: 1.25rem;
+    cursor: pointer;
+}
+
+input[type='submit']:hover{
+    background-color: var(--accent);
+    color: white;
 }
