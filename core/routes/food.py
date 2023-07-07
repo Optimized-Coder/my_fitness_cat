@@ -50,13 +50,27 @@ View food routes
 
 @food.route('/view/json/', methods=['GET'])
 def view_food_json():
-    foods = [food.to_dict() for food in Food.query.all()]
+    sort = request.args.get('sort')
+    food_type = request.args.get('food_type')
+    age_type = request.args.get('age')
+
+
+    foods = [food.to_dict() for food in Food.query
+             .order_by(sort)
+             .all()]
+
 
     return jsonify(foods)
 
 @food.route('/view/', methods=['GET'])
 def view_food():
-    foods = Food.query.all()
+    sort = request.args.get('sort')
+    food_type = request.args.get('food_type')
+    age = request.args.get('age')
+
+    foods = Food.query.order_by(sort).filter(Food.wet_or_dry == food_type).all()
+
+    print(request.args)
 
     context = {
         'title': 'View Food',
@@ -86,6 +100,7 @@ def view_one_food(food_id):
         'food/view-one.html',
         **context
     )
+
 
 
 

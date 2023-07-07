@@ -124,7 +124,7 @@ class Cat(db.Model):
     @property
     def grams_of_chosen_food(self):
         calorie_requirement = int(self.daily_calories)
-        if len(self.food_choice) > 0:
+        if self.food_choice.count() > 0:
             CALORIES_PER_100_GRAMS = self.food_choice[0].calories
             grams_of_chosen_food = round(calorie_requirement / CALORIES_PER_100_GRAMS * 100)
             

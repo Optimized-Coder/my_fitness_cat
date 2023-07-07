@@ -3,7 +3,7 @@ from flask_login import current_user, login_required
 
 from datetime import date
 
-from ..models import Cat, owner_cat
+from ..models import Cat, owner_cat, Food, cat_food
 from ..extensions import db
 from ..functions import get_user_cats
 
@@ -196,4 +196,24 @@ def edit_cat(cat_id):
     
     raise ValueError('Cat not found')
 
+@main.route('/my-cats/<int:cat_id>/add-food/<int:food_id>/')
+@login_required
+def add_cat_food(cat_id, food_id):
+    cat = Cat.query.get(cat_id)
+    food = Food.query.get(food_id)
 
+    if cat is None or food is None:
+        return 'Invalid cat or food ID'
+
+    existing_food = db.session.query(cat_food).filter(cat_food.c.cat_id == cat_id).first()
+
+    if existing_food:
+        delete_query = cat_food.delete().where(cat_food.c.cat_id == cat_id)
+        db.session.execute(delete_query)
+        db.session.commit()
+
+    insert_query = cat_food.insert().values(cat_id=cat_id, food_id=food_id)
+    db.session.execute(insert_query)
+    db.session.commit()
+
+    return 'Cat food added successfully'
