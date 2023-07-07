@@ -23,9 +23,6 @@ class User(UserMixin, db.Model):
     last_name = db.Column(db.String(24))
     password_hash = db.Column(db.String(128))
     cats = db.relationship('Cat', secondary=owner_cat, backref='owner', lazy='dynamic')
-
-    def __repr__(self):
-        return f'{self.id}: {self.first_name}'
     
     def to_dict(self):
         return {
@@ -60,6 +57,7 @@ class Cat(db.Model):
     @property
     def age_months(self):
         return self.age * 12 + (int(datetime.now().month) - int(self.dob.month))
+
 
     @property
     def daily_calories(self):

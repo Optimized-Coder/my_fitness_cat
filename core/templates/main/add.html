@@ -1,4 +1,61 @@
 {% extends 'includes/base.html' %}
 {% block content %}
-<h1>add</h1>
+<h1>Add Cat</h1>
+<form action="{{url_for('main.add_cat')}}" method="POST">
+    <input 
+    type="text"
+    name="name"
+    id="name"
+    placeholder="Enter cat's name..." 
+    required />
+
+    <input 
+    type="number"
+    name="weight"
+    id="weight"
+    step="any"
+    placeholder="Weight in Kg"  
+    required />
+
+    <label for="weight_class">
+        Please select:
+    </label>
+    <select name="weight_class" id="weight_class">
+        <option value="overwight">Overweight</option>
+        <option value="normal">Normal</option>
+        <option value="underweight">Underweight</option>
+    </select>
+
+    <select name="is_neutered" id="is_neutered">
+        <option value="true">Has been spayed / Neutered</option>
+        <option value="false">Has not been spayed / Neutered</option>
+    </select>
+
+    <input 
+    type="number" 
+    max="31" 
+    min="1"
+    name="dob_day"
+    id="dob_day"
+    placeholder="Date of Birth (day)">
+    <input 
+    type="number" 
+    max="12" 
+    min="1"
+    name="dob_month"
+    id="dob_month"
+    placeholder="Date of Birth (month)">
+    <input 
+    type="number" 
+    max="2023" 
+    min="1990"
+    name="dob_year"
+    placeholder="Date of Birth (year)">
+
+    <input 
+    type="submit"
+    value="Submit" />
+
+
+</form>
 {% endblock %}

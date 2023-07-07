@@ -1,17 +1,23 @@
 <header>
-    <h2>My Fitness Cat</h2>
+    <h2>My Fitness Cat <span>
+        <i class="fa-sharp fa-solid fa-cat"></i>
+    </span></h2>
     <nav>
         <ul class="nav">
             {% if current_user.is_authenticated %}
-            <li><a href="#">Your Cats</a></li>
-            <li><a href="#">Add Cat</a></li>
+            <li><a href="{{url_for('main.get_cats')}}">Your Cats</a></li>
+            <li><a href="{{url_for('main.add_cat')}}">Add Cat</a></li>
+            <li><a href="{{url_for('auth.logout')}}">
+                <span>Logout</span>
+                <span>
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </span>
+            </a></li>
             {% endif %}
             {% if not current_user.is_authenticated %}
-            <li><a href="#">Log In</a></li>
-            <li><a href="#">Register</a></li>
+            <li><a href="{{url_for('auth.login')}}">Log In</a></li>
+            <li><a href="{{url_for('auth.register')}}">Register</a></li>
             {% endif %}
-            <li><a href="#">Contact Us</a></li>
-
         </ul>
     </nav>
 </header>

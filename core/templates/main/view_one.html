@@ -1,4 +1,56 @@
 {% extends 'includes/base.html' %}
 {% block content %}
-<h1>View One</h1>
+<h1>
+    {{found_cat.name}}'s Profile
+</h1>
+
+<table>
+    <tr>
+        <th>
+            Age
+        </th>
+        <th>
+            Breed
+        </th>
+        <th>
+            Color
+        </th>
+        <th>
+            Weight
+        </th>
+        <th>
+            Food Choice
+        </th>
+    </tr>
+    <tr>
+        {% if found_cat.age > 0 %}
+            <td>{{ found_cat.age }} years</td>
+        {% else %}
+            <td>{{found_cat.age_months}} months</td>
+        {% endif %}
+        <td>
+            {{found_cat.breed}}
+        </td>
+        <td>
+            {{found_cat.color}}
+        </td>
+        <td>
+            {{found_cat.weight}}kg
+        </td>
+        {% if found_cat.food_choice %}
+        <td>
+            {{found_cat.food_choice[0].flavour}}
+        </td>
+        {% else %}
+        <td>
+            No food added
+        </td>
+        {% endif %}
+        <td>
+            <a href="{{url_for('main.edit_cat', cat_id=found_cat.id)}}" >
+                <i class="fa-solid fa-pen-to-square"></i>
+            </a>
+        </td>
+    </tr>
+</table>
 {% endblock %}

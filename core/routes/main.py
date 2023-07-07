@@ -79,7 +79,7 @@ def add_cat():
     db.session.execute(user_cat)
     db.session.commit()
 
-    return 'Cat added'
+    return redirect(url_for('main.get_cats'))
 
 '''
 View cats routes
@@ -88,7 +88,8 @@ View cats routes
 @main.route('/my-cats/', methods=['GET'])
 @login_required
 def get_cats():
-    cats = [cat.to_dict() for cat in get_user_cats()]
+    cats = [cat for cat in current_user.cats]
+    print(cats)
 
     context = {
         'title': 'My Cats | My Fitness Cat',
@@ -115,7 +116,7 @@ def get_cat(cat_id):
 
     context = {
         'title': 'My Cats | My Fitness Cat',
-        'cats': found_cat
+        'found_cat': found_cat[0]
     }
     return render_template(
         'main/view_one.html',
@@ -129,7 +130,12 @@ def get_cat_json(cat_id):
 
     return jsonify(found_cat)
 
-@main.route('/my-cats/<int:cat_id>/delete/', methods=['DELETE'])
+# @main.route('/my-cats/<int:cat_id>/delete/', methods=['DELETE'])
+# @login_required
+# def delete_cat_get(cat_id):
+
+
+@main.route('/my-cats/<int:cat_id>/delete/', methods=['GET'])
 @login_required
 def delete_cat(cat_id):
     cats = [cat for cat in get_user_cats() if cat.id == cat_id]
@@ -154,7 +160,7 @@ def edit_cat_get(cat_id):
 
     context = {
         'title': 'Edit Cat | My Fitness Cat',
-        'cats': found_cat
+        'found_cat': found_cat
     }
 
     return render_template(
@@ -165,7 +171,7 @@ def edit_cat_get(cat_id):
 @main.route('/my-cats/<int:cat_id>/edit/', methods=['POST'])
 @login_required
 def edit_cat(cat_id):
-    found_cat = [cat.to_dict() for cat in get_user_cats() if cat.id == cat_id]
+    found_cat = [cat for cat in get_user_cats() if cat.id == cat_id][0]
 
     weight = request.form.get('weight')
     weight_class = request.form.get('weight_class')
