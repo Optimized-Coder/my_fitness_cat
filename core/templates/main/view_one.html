@@ -18,9 +18,9 @@
         <th>
             Weight
         </th>
-        <th>
+        <!-- <th>
             Food Choice
-        </th>
+        </th> -->
     </tr>
     <tr>
         {% if found_cat.age > 0 %}
@@ -37,7 +37,7 @@
         <td>
             {{found_cat.weight}}kg
         </td>
-        {% if found_cat.food_choice %}
+        <!-- {% if found_cat.food_choice %}
         <td>
             {{found_cat.food_choice[0].flavour}}
         </td>
@@ -45,7 +45,7 @@
         <td>
             No food added
         </td>
-        {% endif %}
+        {% endif %} -->
         <td>
             <a href="{{url_for('main.edit_cat', cat_id=found_cat.id)}}" >
                 <i class="fa-solid fa-pen-to-square"></i>

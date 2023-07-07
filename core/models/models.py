@@ -17,11 +17,11 @@ cat_food = db.Table(
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
-    first_name = db.Column(db.String(24))
-    last_name = db.Column(db.String(24))
-    password_hash = db.Column(db.String(128))
+    username = db.Column(db.String(64), index=True, unique=True, nullable=False)
+    email = db.Column(db.String(120), index=True, unique=True, nullable=False)
+    first_name = db.Column(db.String(24), default='User')
+    last_name = db.Column(db.String(24), default='Name')
+    password_hash = db.Column(db.String(128), nullable=False)
     cats = db.relationship('Cat', secondary=owner_cat, backref='owner', lazy='dynamic')
     
     def to_dict(self):
@@ -36,13 +36,13 @@ class User(UserMixin, db.Model):
     
 class Cat(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True)
+    name = db.Column(db.String(80), nullable=False)
     dob = db.Column(db.Date)
-    breed = db.Column(db.String(80))
-    color = db.Column(db.String(80))
-    weight = db.Column(db.Float)
-    weight_class = db.Column(db.String(24))
-    is_neutered = db.Column(db.Boolean)
+    breed = db.Column(db.String(80), default='N/A')
+    color = db.Column(db.String(80), default='N/A')
+    weight = db.Column(db.Float, default=3)
+    weight_class = db.Column(db.String(24), default='normal')
+    is_neutered = db.Column(db.Boolean, default=True)
     food_choice = db.relationship('Food',
     secondary=cat_food, backref='cat', lazy='dynamic'
     )
