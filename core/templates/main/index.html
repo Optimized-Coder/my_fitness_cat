@@ -23,10 +23,18 @@
             <h3>Cat's Weight: {{ weight }}kg</h3>
 
             <h4>{{name.title()}} requires {{calories}} calories per day</h4>
+            {% if current_user.is_authenticated %}
+            <h4>Please note: This is just an estimate. For a more reliable calculation
+                <a href="{{url_for('main.get_cats')}}">see your cats</a> or <a href="{{url_for('main.add_cat_get')}}">
+                    add a cat
+                </a> 
+            </h4>
+            {% else %}
             <h4>Please note: This is just an estimate. For a more reliable calculation
                 <a href="{{url_for('auth.register')}}">register</a> for an account or 
                 <a href="{{url_for('auth.login')}}">login</a>
             </h4>
+            {% endif %}
         </div>
         {% endif %}
     </div>
