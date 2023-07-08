@@ -11,8 +11,21 @@ main = Blueprint('main', __name__)
 
 @main.route('/', methods=['GET'])
 def index():
+    name = request.args.get('name')
+    weight = request.args.get('weight')
+    age = request.args.get('age')
+
+    if weight and name and age:
+        calories = round(int(weight) ** 0.75 * 70 * 1.6)
+    else:
+        calories = 0
+
     context = {
-        'title': 'Home | My Fitness Cat'
+        'title': 'Home | My Fitness Cat',
+        'name': name,
+        'weight': weight,
+        'age': age,
+        'calories': calories
     }
 
     return render_template(

@@ -1,4 +1,33 @@
 {% extends 'includes/base.html' %}
 {% block content %}
-<h1>Home</h1>
+ <div class="content">
+    <div class="hero">
+
+    </div>
+        
+        <form class="cat-form" action="/" method="GET">
+            <h2>Quick Calculator</h2>
+            <input type="text" name="name" placeholder="Cat's Name" required>
+            <br>
+            <input type="number" name="age" placeholder="Cat's Age (in years)" required>
+            <br>
+            <input type="number" name="weight" placeholder="Cat's Weight (in kg)" required>
+            <br>
+            <input type="submit" value="Calculate">
+        </form>
+        {% if name and age and weight %}
+        <div class="quick-result">
+            <h2>Result: </h2>
+            <h3>Cat's Name: {{ name.title() }}</h3>
+            <h3>Cat's Age: {{ age }}</h3>
+            <h3>Cat's Weight: {{ weight }}kg</h3>
+
+            <h4>{{name.title()}} requires {{calories}} calories per day</h4>
+            <h4>Please note: This is just an estimate. For a more reliable calculation
+                <a href="{{url_for('auth.register')}}">register</a> for an account or 
+                <a href="{{url_for('auth.login')}}">login</a>
+            </h4>
+        </div>
+        {% endif %}
+    </div>
 {% endblock %}
