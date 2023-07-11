@@ -143,3 +143,55 @@ input[type='submit']:hover{
     background-repeat: no-repeat;
     margin: 0 1rem;
 }
+
+.flashes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+}
+
+.flashes li {
+    list-style: none;
+    width: 100%;
+    color: white;
+    padding: 1rem 0;
+    font-size: 1.2rem;
+}
+
+.success {
+    background-color: var(--success);
+}
+
+.error {
+    background-color: var(--error)
+}
+
+
+.profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.profile-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    text-align: center;
+    width: 100%;
+    padding: 2rem;
+}
+
+.profile-row p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 1.2rem;
+    margin: 0;
+    text-align: center;
+    line-height: 0.2rem;
+}

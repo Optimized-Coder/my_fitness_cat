@@ -5,12 +5,18 @@ import os
 from .extensions import db, migrate, login_manager
 from .functions import get_daily_calories, validate_password
 
+from dotenv import find_dotenv, load_dotenv
+
+load_dotenv(find_dotenv())
+
 def create_app():
     app = Flask(__name__)
     app.config.from_mapping(
         SECRET_KEY=os.environ.get('SECRET_KEY'),
         SQLALCHEMY_DATABASE_URI=os.environ.get('DB_URI'),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
+        FLASK_APP='core',
+        FLASK_DEBUG=True,
     )
 
     db.init_app(app)

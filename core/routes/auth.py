@@ -41,7 +41,7 @@ def login():
         user = User.query.filter_by(username=username).first()
 
         if user is None or not check_password_hash(user.password_hash, password):
-            flash('Invalid username or password')
+            flash('Invalid username or password', 'error')
             return redirect(url_for('auth.login'))
         else:
             login_user(user, remember=True)
@@ -116,7 +116,9 @@ Logout routes
 @auth.route('/logout/')
 def logout():
     if not current_user.is_authenticated:
-        return 'You must be logged in'
+        flash("You are not logged in", "error")
+        return redirect(url_for('auth.login'))
     else:
         logout_user()
+        flash("Logged Out Successfully", "success")
         return redirect(url_for('auth.login'))

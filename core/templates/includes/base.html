@@ -13,18 +13,19 @@
         <link rel="stylesheet" href="{{url_for('static', filename='css/root.css')}}">
     {% endif %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="shortcut icon" href="{{url_for('static', filename='icon/favicon.ico')}}">
 </head>
 <body>
     <div class="full-wrapper">
         {% include 'includes/header.html' %}
-        {% with message = get_flashed_messages(with_categories=true) %}
-                {% if message %}
-                <ul class=flashes>
-                    {% for category, message in messages %}
-                    <li class="{{category}}">{{ message }}</li>
-                    {% endfor %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
                 </ul>
-                {% endif %}
+            {% endif %}
             {% endwith %}
         <div class="container">
             
